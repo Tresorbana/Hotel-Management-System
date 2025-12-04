@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Reservation implements Serializable, Comparable<Reservation> {
+
     private Customer customer;
     private Room room;
     private LocalDate start;
@@ -13,6 +14,7 @@ public class Reservation implements Serializable, Comparable<Reservation> {
         room = r;
         start = s;
         end = e;
+        cancelled = false;
         r.setAvailable(false);
     }
 
@@ -22,6 +24,10 @@ public class Reservation implements Serializable, Comparable<Reservation> {
 
     public Room getRoom() {
         return room;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
     }
 
     public synchronized void cancel() {
@@ -36,6 +42,7 @@ public class Reservation implements Serializable, Comparable<Reservation> {
 
     @Override
     public String toString() {
-        return customer.getName() + " | Room " + room.getRoomNumber() + " | " + start + " to " + end + " | Cancelled=" + cancelled;
+        return customer.getName() + " | Room " + room.getRoomNumber() +
+                " | " + start + " → " + end + " | Cancelled=" + cancelled;
     }
 }

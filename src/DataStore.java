@@ -16,9 +16,4 @@ public class DataStore {
         } catch (Exception ignored) {}
     }
 
-    public synchronized static void writeTemplate(String file, String text) {
-        try (FileWriter fw = new FileWriter(file)) {
-            fw.write(text);
-        } catch (Exception ignored) {}
-    }
 }
