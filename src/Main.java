@@ -2,88 +2,47 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Hotel hotel = new Hotel();
-        Scanner scanner = new Scanner(System.in);
-        boolean isRunning = true;
-        System.out.println("Welcome to Tresor Grand Hotel");
+        Hotel h = new Hotel();
+        Scanner sc = new Scanner(System.in);
 
-        while (isRunning) {
-            System.out.println("========================");
-            System.out.println("\nMenu:");
-            System.out.println("1. Add room");
-            System.out.println("2. Create customer");
-            System.out.println("3. Make reservation");
-            System.out.println("4. Show available rooms");
-            System.out.println("5. Cancel reservation");
-            System.out.println("6. Show reservations");
-            System.out.println("Type q or exit to quit");
+        while (true) {
+            System.out.println("1 Add Room");
+            System.out.println("2 Add Customer");
+            System.out.println("3 Make Reservation");
+            System.out.println("4 Cancel Reservation");
+            System.out.println("5 View Customers");
+            System.out.println("6 View Rooms");
+            System.out.println("7 View Reservations");
+            System.out.println("0 Exit");
+            int ch = Integer.parseInt(sc.nextLine());
 
-            String option = scanner.nextLine().toLowerCase();
-
-            switch (option) {
-                case "1":
-                    System.out.print("Room number: ");
-                    int roomNumber = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Room type: ");
-                    String roomType = scanner.nextLine();
-                    System.out.print("Price: ");
-                    double price = Double.parseDouble(scanner.nextLine());
-                    hotel.addRoom(roomNumber, roomType, price);
-                    break;
-
-                case "2":
-                    System.out.print("Customer name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Email: ");
-                    String email = scanner.nextLine();
-                    System.out.print("Phone: ");
-                    String phone = scanner.nextLine();
-                    Customer customer = new Customer(name, email, phone);
-                    hotel.addCustomer(customer);
-                    break;
-
-                case "3":
-                    if (!hotel.hasCustomers()) {
-                        System.out.println("No customers. Please add a customer first.");
-                        break;
-                    }
-                    System.out.println("Customers:");
-                    hotel.showCustomers();
-                    System.out.print("Enter customer name: ");
-                    String custName = scanner.nextLine();
-                    System.out.println("Available rooms:");
-                    hotel.showAvailableRooms();
-                    System.out.print("Enter room number to reserve: ");
-                    int reserveRoom = Integer.parseInt(scanner.nextLine());
-                    hotel.makeReservation(custName, reserveRoom);
-                    break;
-
-                case "4":
-                    hotel.showAvailableRooms();
-                    break;
-
-                case "5":
-                    System.out.print("Customer name: ");
-                    String cancelName = scanner.nextLine();
-                    System.out.print("Room number: ");
-                    int cancelRoom = Integer.parseInt(scanner.nextLine());
-                    hotel.cancelReservation(cancelName, cancelRoom);
-                    break;
-
-                case "6":
-                    hotel.viewReservations();
-                    break;
-
-                case "q":
-                case "exit":
-                    isRunning = false;
-                    System.out.println("Goodbye.");
-                    break;
-
-                default:
-                    System.out.println("Please enter a valid option.");
-            }
+            if (ch == 1) {
+                int n = Integer.parseInt(sc.nextLine());
+                String t = sc.nextLine();
+                double p = Double.parseDouble(sc.nextLine());
+                h.addRoom(n, t, p);
+            } else if (ch == 2) {
+                String name = sc.nextLine();
+                String phone = sc.nextLine();
+                String email = sc.nextLine();
+                h.addCustomer(name, phone, email);
+            } else if (ch == 3) {
+                String name = sc.nextLine();
+                int rn = Integer.parseInt(sc.nextLine());
+                String s = sc.nextLine();
+                String e = sc.nextLine();
+                h.makeReservation(name, rn, s, e);
+            } else if (ch == 4) {
+                String name = sc.nextLine();
+                int rn = Integer.parseInt(sc.nextLine());
+                h.cancelReservation(name, rn);
+            } else if (ch == 5) {
+                h.showCustomers();
+            } else if (ch == 6) {
+                h.showRooms();
+            } else if (ch == 7) {
+                h.showReservations();
+            } else if (ch == 0) break;
         }
-        scanner.close();
     }
 }

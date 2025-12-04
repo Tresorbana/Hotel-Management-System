@@ -1,18 +1,19 @@
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
-public class Reservation {
-    private LocalDate bookIn;
-    private LocalDate bookOut;
+public class Reservation implements Serializable, Comparable<Reservation> {
     private Customer customer;
     private Room room;
+    private LocalDate start;
+    private LocalDate end;
+    private boolean cancelled;
 
-    public Reservation(Customer customer, Room room, LocalDate bookIn, LocalDate bookOut) {
-        this.bookIn = bookIn;
-        this.bookOut = bookOut;
-        this.customer = customer;
-        this.room = room;
-        room.bookRoom();
+    public Reservation(Customer c, Room r, LocalDate s, LocalDate e) {
+        customer = c;
+        room = r;
+        start = s;
+        end = e;
+        r.setAvailable(false);
     }
 
     public Customer getCustomer() {
@@ -23,23 +24,18 @@ public class Reservation {
         return room;
     }
 
-    public LocalDate getBookIn() {
-        return bookIn;
+    public synchronized void cancel() {
+        cancelled = true;
+        room.setAvailable(true);
     }
 
-    public LocalDate getBookOut() {
-        return bookOut;
-    }
-
-    public void cancel() {
-        room.cancelBooking();
+    @Override
+    public int compareTo(Reservation o) {
+        return start.compareTo(o.start);
     }
 
     @Override
     public String toString() {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return customer.getName() + " | Room " + room.getRoomNumber() +
-                " (" + room.getRoomType() + ") | From " + bookIn.format(fmt) +
-                " to " + bookOut.format(fmt);
+        return customer.getName() + " | Room " + room.getRoomNumber() + " | " + start + " to " + end + " | Cancelled=" + cancelled;
     }
 }
